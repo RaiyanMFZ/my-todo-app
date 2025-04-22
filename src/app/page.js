@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useUser } from "@stackframe/stack";
 import Header from "@/components/header";
 import { Squares } from "@/components/ui/squares-background";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Home() {
@@ -37,11 +37,14 @@ export default function Home() {
             placeholder="enter a task"
             className="rounded-r-none w-full max-w-[400px] bg-neutral-900 border-neutral-800 text-neutral-50"
           />
-          <ShimmerButton variant="outline" className="rounded-l-none">
+          <Button
+            variant="outline"
+            className="rounded-l-none rounded-r-full outline-none focus:ring-0 border-l-0 before:hidden after:hidden shadow-none bg-neutral-900 border-neutral-800 text-neutral-50 hover:bg-neutral-800"
+          >
             <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
               Add Task
             </span>
-          </ShimmerButton>
+          </Button>
         </div>
       </div>
     </div>
