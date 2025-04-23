@@ -16,6 +16,10 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
 
   const handleAddTask = async () => {
+    if (task.trim() === "") {
+      return;
+    }
+
     try {
       const res = await fetch("/api/tasks", {
         method: "POST",
@@ -67,7 +71,6 @@ export default function Home() {
     );
   }
 
-  // Deine React-Komponente
   const handleDeleteTask = async (id) => {
     try {
       const res = await fetch("/api/tasks", {
@@ -80,7 +83,6 @@ export default function Home() {
         throw new Error("Failed to delete task");
       }
 
-      // Task von der UI entfernen
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error("Error deleting task", error);
@@ -96,7 +98,7 @@ export default function Home() {
           To Do List
         </h1>
         <p className="mt-4 font-normal text-base text-neutral-300 max-w-lg text-center mx-auto">
-          A simple and effective to-do list app built with Next.js, Tailwind CSS, and Shadcn UI.
+          Write down your tasks and check them off when you're done.
         </p>
 
         <div className="flex justify-center items-center mt-6">
@@ -111,7 +113,7 @@ export default function Home() {
           <Button
             onClick={handleAddTask}
             variant="outline"
-            className="rounded-l-none rounded-r-full outline-none focus:ring-0 border-l-0 before:hidden after:hidden shadow-none bg-neutral-900 border-neutral-800 text-neutral-50 hover:bg-neutral-800"
+            className="rounded-l-none rounded-r-full outline-none focus:ring-0 border-l-0 before:hidden after:hidden shadow-none bg-neutral-900 border-neutral-800 text-neutral-50 hover:bg-neutral-800 transition-colors duration-300 hover:text-white"
           >
             Add Task
           </Button>
@@ -124,7 +126,7 @@ export default function Home() {
               tasks.map((task) => (
                 <div
                   key={task.id}
-                  className="bg-neutral-800 rounded-xl p-4 shadow-md border border-neutral-700"
+                  className="bg-neutral-800 rounded-xl p-4 shadow-md border border-neutral-700 hover:bg-neutral-700 transition-colors duration-400"
                 >
                   <div className="flex justify-between items-center">
                     <h3 className="text-lg font-semibold text-neutral-100">{task.title}</h3>
@@ -133,7 +135,7 @@ export default function Home() {
                       <Checkbox
                         onCheckedChange={(checked) => {
                           if (checked) {
-                            handleDeleteTask(task.id); // Löscht Task bei angekreuzt
+                            handleDeleteTask(task.id);
                           }
                         }}
                       />

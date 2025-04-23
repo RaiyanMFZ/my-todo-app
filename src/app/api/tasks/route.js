@@ -17,6 +17,9 @@ export async function POST(req) {
 }
 
 export async function GET() {
+  if (tasks.length === 0) {
+    return Response.json({ message: "No tasks found" }, { status: 404 });
+  }
     return Response.json(tasks, { status: 200 });
 }
 
