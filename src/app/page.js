@@ -98,7 +98,7 @@ export default function Home() {
           To Do List
         </h1>
         <p className="mt-4 font-normal text-base text-neutral-300 max-w-lg text-center mx-auto">
-          Write down your tasks and check them off when you're done.
+          Write down your tasks and check them off when you are done.
         </p>
 
         <div className="flex justify-center items-center mt-6">
@@ -118,7 +118,7 @@ export default function Home() {
             Add Task
           </Button>
         </div>
-    
+
         <div className="mt-8">
           <h2 className="text-2xl font-semibold text-neutral-50">Tasks:</h2>
           <div className="mt-4 space-y-4">
