@@ -7,6 +7,7 @@ import { Squares } from "@/components/ui/squares-background";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 
 export default function Home() {
@@ -25,11 +26,11 @@ export default function Home() {
       if (!res.ok) {
         throw new Error("Failed to add task");
       }
-      
+
       const data = await res.json();
 
       setTasks((tasks) => [...tasks, data]);
-      
+
       setTask("");
     } catch (error) {
       console.error("Error adding task", error);
@@ -66,6 +67,26 @@ export default function Home() {
     );
   }
 
+  // Deine React-Komponente
+  const handleDeleteTask = async (id) => {
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete task");
+      }
+
+      // Task von der UI entfernen
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    } catch (error) {
+      console.error("Error deleting task", error);
+    }
+  };
+
   return (
     <div className="relative min-h-screen">
       <Squares className="absolute inset-0 -z-10" />
@@ -75,8 +96,9 @@ export default function Home() {
           To Do List
         </h1>
         <p className="mt-4 font-normal text-base text-neutral-300 max-w-lg text-center mx-auto">
-          A simple and effective to-do list app built with Next.js, Tailwind CSS, and Shadcn UI. Tap the button to create a new item on your to-do list.
+          A simple and effective to-do list app built with Next.js, Tailwind CSS, and Shadcn UI.
         </p>
+
         <div className="flex justify-center items-center mt-6">
           <Input
             type="text"
@@ -91,27 +113,45 @@ export default function Home() {
             variant="outline"
             className="rounded-l-none rounded-r-full outline-none focus:ring-0 border-l-0 before:hidden after:hidden shadow-none bg-neutral-900 border-neutral-800 text-neutral-50 hover:bg-neutral-800"
           >
-            <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 text-neutral-50">
-              Add Task
-            </span>
+            Add Task
           </Button>
         </div>
+    
         <div className="mt-8">
           <h2 className="text-2xl font-semibold text-neutral-50">Tasks:</h2>
-          <ul className="mt-4 space-y-2">
+          <div className="mt-4 space-y-4">
             {tasks.length > 0 ? (
               tasks.map((task) => (
-                <li key={task.id} className="text-neutral-200">
-                  {task.title}
-                  <span className="text-neutral-500 text-sm">
-                    {task.createdAt}
-                  </span>
-                </li>
+                <div
+                  key={task.id}
+                  className="bg-neutral-800 rounded-xl p-4 shadow-md border border-neutral-700"
+                >
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-semibold text-neutral-100">{task.title}</h3>
+                    <div className="flex items-center gap-2 text-neutral-200">
+                      Task completed?
+                      <Checkbox
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            handleDeleteTask(task.id); // Löscht Task bei angekreuzt
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <p className="text-sm text-neutral-400 mt-2">
+                    Created at: {new Date(task.createdAt).toLocaleDateString("de-DE", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </p>
+                </div>
               ))
             ) : (
-              <li className="text-neutral-500">No tasks available.</li>
+              <p className="text-neutral-500">No tasks available.</p>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </div>

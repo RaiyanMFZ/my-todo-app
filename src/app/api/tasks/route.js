@@ -19,3 +19,25 @@ export async function POST(req) {
 export async function GET() {
     return Response.json(tasks, { status: 200 });
 }
+
+export async function DELETE(req) {
+    try {
+      const { id } = await req.json();
+  
+      const taskIndex = tasks.findIndex((task) => task.id === id);
+  
+      if (taskIndex === -1) {
+        return new Response("Task not found", { status: 404 });
+      }
+  
+      tasks.splice(taskIndex, 1);
+  
+      return new Response(JSON.stringify({ message: "Task deleted successfully" }), {
+        status: 200,
+      });
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      return new Response("Failed to delete task", { status: 500 });
+    }
+  }
+  
